@@ -5,4 +5,6 @@ router.setRoutes([
   { path: "/", component: "initiation-page" },
   { path: "/roomid", component: "initiationid-page" },
   { path: "/roomuser", component: "initiationname-page" },
+  { path: "/sharecode", component: "sharecode-page" },
+  { path: "/instruction", component: "instruction-page" },
 ]);
