@@ -4,19 +4,28 @@ import { state } from "../../state";
 class InitiationName extends HTMLElement {
   connectedCallback() {
     this.render();
-
-    const form = document.querySelector(".welcome__container-button");
+    const form = document.querySelector(".form__user-name");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const target = e.target as any;
       const user = target.name.value;
-      state.signUp(user).then(() => {
-        state.newRoom(() => {
-          state.accessToRoom().then(() => {
+      const currentState = state.getState();
+
+      if (currentState.roomId) {
+        state.signUp(user).then(() => {
+          state.getRealTimeDatabase(currentState.roomId).then(() => {
+            state.connectToRoom(() => {
+              Router.go("/instruction");
+            });
+          });
+        });
+      } else {
+        state.signUp(user).then(() => {
+          state.newRoom(() => {
             Router.go("/sharecode");
           });
         });
-      });
+      }
     });
   }
 
@@ -57,23 +66,22 @@ class InitiationName extends HTMLElement {
           }
           `;
     this.innerHTML = `
-          <div class="welcome__container">
-      <div class="welcome__container-title">
-      <my-text variant="title">Piedra, Papel, ó Tijera</my-text>
-      </div>
-      
-      <form class="welcome__container-button">
-        <input class="input" type="text" name="name" placeholder="TU NOMBRE">
-        <button class="button">Empezar</button>
-      </form>
+      <div class="welcome__container">
+        <div class="welcome__container-title">
+          <my-text variant="title">Piedra, Papel, ó Tijera</my-text>
+        </div>
+        
+        <form class="form__user-name">
+          <input class="input" type="text" name="name" placeholder="TU NOMBRE">
+          <button class="button">Empezar</button>
+        </form>
     
-      <div class="welcome__container-hands">
-      <my-hands material="piedra"></my-hands>
-      <my-hands material="papel"></my-hands>
-      <my-hands material="tijera"></my-hands>
-      </div>
-      </div>
-      `;
+        <div class="welcome__container-hands">
+          <my-hands material="piedra"></my-hands>
+          <my-hands material="papel"></my-hands>
+          <my-hands material="tijera"></my-hands>
+        </div>
+      </div>`;
     this.appendChild(style);
   }
 }

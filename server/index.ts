@@ -26,7 +26,7 @@ app.post("/signup", (req, res) => {
           })
           .then((newUserRef) => {
             res.json({
-              id: newUserRef.id,
+              userId: newUserRef.id,
             });
           });
       } else {
@@ -37,8 +37,9 @@ app.post("/signup", (req, res) => {
     });
 });
 
-app.post("/rooms", (req, res) => {
+app.post("/newroom", (req, res) => {
   const { userId } = req.body;
+  const { userName } = req.body;
   usersCollection
     .doc(userId.toString())
     .get()
@@ -47,8 +48,18 @@ app.post("/rooms", (req, res) => {
         const rtdb = realTimeDatabase.ref("/rooms/" + nanoid());
         rtdb
           .set({
-            message: [],
-            owner: userId,
+            jugador1: {
+              userName,
+              score: 0,
+              ready: false,
+              choice: false,
+            },
+            jugador2: {
+              userName: "rival",
+              score: 0,
+              ready: false,
+              choice: false,
+            },
           })
           .then(() => {
             const roomLongId = rtdb.key;
@@ -56,13 +67,22 @@ app.post("/rooms", (req, res) => {
               .toString(23)
               .substr(2, 6)
               .toUpperCase();
-            usersCollection
+            roomsCollection
               .doc(roomId.toString())
               .set({
                 rtdbRoomId: roomLongId,
+                jugador1: userName,
+                j1score: 0,
+                jugador2: "Rival",
+                j2score: 0,
               })
               .then(() => {
-                res.json({ id: roomId.toString() });
+                res.json({
+                  rtdbRoomId: roomLongId,
+                  roomId: roomId.toString(),
+                  jugador: "jugador1",
+                  rivalName: "rivalName",
+                });
               });
           });
       } else {
@@ -80,7 +100,7 @@ app.get("/rooms/:roomId", (req, res) => {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        usersCollection
+        roomsCollection
           .doc(roomId)
           .get()
           .then((snap) => {
@@ -94,6 +114,110 @@ app.get("/rooms/:roomId", (req, res) => {
         });
       }
     });
+});
+
+app.post("/rooms/:rtdbRoomId", (req, res) => {
+  const { rtdbRoomId } = req.params;
+  const { userName } = req.body;
+  const { roomId } = req.body;
+  roomsCollection
+    .doc(roomId.toString())
+    .get()
+    .then((doc) => {
+      const data = doc.data();
+      if (data.jugador1 == userName) {
+        const roomj1Ref = realTimeDatabase.ref(
+          "/rooms/" + rtdbRoomId + "/jugador1"
+        );
+        roomj1Ref.update({
+          userName,
+        });
+        roomsCollection.doc(roomId.toString()).update({
+          jugador1: userName,
+        });
+        res.json({
+          jugador: "jugador1",
+        });
+      } else {
+        const roomj2Ref = realTimeDatabase.ref(
+          "/rooms/" + rtdbRoomId + "/jugador2"
+        );
+        roomj2Ref.update({
+          userName,
+        });
+        roomsCollection.doc(roomId.toString()).update({
+          jugador2: userName,
+        });
+        res.json({
+          jugador: "jugador2",
+        });
+      }
+    });
+});
+
+app.get("/rooms/userinfo/:roomId/:jugador", (req, res) => {
+  const { roomId } = req.params;
+  const { jugador } = req.params;
+  roomsCollection
+    .doc(roomId.toString())
+    .get()
+    .then((doc) => {
+      const data = doc.data();
+      if (jugador == "jugador1") {
+        res.json({
+          rivalName: data.jugador2,
+          score: data.j1score,
+          rivalScore: data.j2score,
+        });
+      } else {
+        res.json({
+          rivalName: data.jugador1,
+          score: data.j2score,
+          rivalScore: data.j1score,
+        });
+      }
+    });
+});
+
+app.post("/pushwinner", (req, res) => {
+  const { rtdbRoomId } = req.body;
+  const { jugador } = req.body;
+  const { score } = req.body;
+  const { rivalScore } = req.body;
+  const { roomId } = req.body;
+  const roomRef = realTimeDatabase.ref("/rooms/" + rtdbRoomId + "/" + jugador);
+  roomRef.update({
+    score: score,
+  });
+  res.json({
+    message: "listo",
+  });
+  if (jugador == "jugador1") {
+    roomsCollection
+      .doc(roomId.toString())
+      .update({
+        j2score: rivalScore,
+        j1score: score,
+      })
+      .then(() => {
+        res.json({
+          j1score: score,
+        });
+      });
+  }
+  if (jugador == "jugador2") {
+    roomsCollection
+      .doc(roomId.toString())
+      .update({
+        j1score: rivalScore,
+        j2score: score,
+      })
+      .then(() => {
+        res.json({
+          j2score: score,
+        });
+      });
+  }
 });
 
 app.listen(port, () => {

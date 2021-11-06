@@ -1,17 +1,13 @@
 import { Router } from "@vaadin/router";
 import { state } from "../../state";
 
-class ShareCodePage extends HTMLElement {
-  roomId: string;
+class WaitingPage extends HTMLElement {
+  rivalName: string;
   connectedCallback() {
     const currentState = state.getState();
-    this.roomId = currentState.roomId;
+    this.rivalName = currentState.rivalName;
     this.render();
-
-    const form = document.querySelector(".button__code");
-    form.addEventListener("click", () => {
-      Router.go("/instruction");
-    });
+    state.listenReady();
   }
   render() {
     const style = document.createElement("style");
@@ -39,17 +35,26 @@ class ShareCodePage extends HTMLElement {
     align-items: center;
     width: 100%;
     }
+    .new-initiation{ 
+      justify-content: space-evenly;
+      padding-top: 0;
+    }
+   
+    .waiting__container-text{
+      margin: 50px 0;
+      text-align:center;
+    }
 `;
 
     this.innerHTML = `
-      <div class="initiation__container">
-      <div class="sharecode__container-text">
-          <h3 class="h3">Compartí el código:</h3>
-          <h2 class="code">${this.roomId}</h2>
-          <h3 class="h3">Con tu contrincante</h3>
+    <header-comp class="nose"></header-comp>
+      <div class="initiation__container new-initiation">
+      <div class="waiting__container-text">
+          <h3 class="h3">Esperando a que</h3>
+          <h2 class="code">${this.rivalName}</h2>
+          <h3 class="h3">presione ¡Jugar!...</h3>
       </div>
 
-      <my-button variant="blue" class="button__code">Continuar</my-button>
 
       <div class="initiation__container-hands">
         <my-hands material="piedra"></my-hands>
@@ -62,4 +67,4 @@ class ShareCodePage extends HTMLElement {
     this.appendChild(style);
   }
 }
-customElements.define("sharecode-page", ShareCodePage);
+customElements.define("waiting-rival", WaitingPage);
