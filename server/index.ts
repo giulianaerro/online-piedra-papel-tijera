@@ -2,6 +2,7 @@ import { firestore, realTimeDatabase } from "./database";
 import * as express from "express";
 import * as cors from "cors";
 import { nanoid } from "nanoid";
+import * as path from "path";
 
 const port = 3000;
 
@@ -218,6 +219,10 @@ app.post("/pushwinner", (req, res) => {
         });
       });
   }
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
 app.listen(port, () => {
