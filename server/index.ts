@@ -74,7 +74,7 @@ app.post("/newroom", (req, res) => {
                 rtdbRoomId: roomLongId,
                 jugador1: userName,
                 j1score: 0,
-                jugador2: "Rival",
+                jugador2: "rivalName",
                 j2score: 0,
               })
               .then(() => {
