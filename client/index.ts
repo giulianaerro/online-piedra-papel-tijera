@@ -21,5 +21,5 @@ import "./pages/result/lose";
 import "./routes";
 
 (function () {
-  //   state.init();
+  // state.init();
 })();

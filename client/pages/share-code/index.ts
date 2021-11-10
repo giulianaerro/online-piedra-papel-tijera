@@ -30,7 +30,6 @@ class ShareCodePage extends HTMLElement {
     }
     .code{
     font-size: 40px;
-
     }
     .button__code{
     margin-top: 20px;
@@ -48,9 +47,7 @@ class ShareCodePage extends HTMLElement {
           <h2 class="code">${this.roomId}</h2>
           <h3 class="h3">Con tu contrincante</h3>
       </div>
-
       <my-button variant="blue" class="button__code">Continuar</my-button>
-
       <div class="initiation__container-hands">
         <my-hands material="piedra"></my-hands>
         <my-hands material="papel"></my-hands>

@@ -7,13 +7,11 @@ customElements.define(
   class extends HTMLElement {
     shadow: ShadowRoot;
     material: string;
-    computer: boolean = false;
 
     constructor() {
       super();
       this.shadow = this.attachShadow({ mode: "open" });
       this.material = this.getAttribute("material");
-      this.computer = this.hasAttribute("computer");
     }
     connectedCallback() {
       this.render();
@@ -38,9 +36,7 @@ customElements.define(
       } else {
         img.src = tijera;
       }
-      if (this.computer == true) {
-        img.classList.add("rotate");
-      }
+
       img.classList.add("hands");
       this.shadow.appendChild(style);
       this.shadow.appendChild(img);

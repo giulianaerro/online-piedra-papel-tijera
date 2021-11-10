@@ -5,7 +5,6 @@ class InstructionPage extends HTMLElement {
   connectedCallback() {
     state.getRivalInfo(() => {
       this.render();
-
       const button = document.querySelector(".button");
       button.addEventListener("click", () => {
         state.setReadyTrue();

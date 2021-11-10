@@ -53,13 +53,13 @@ app.post("/newroom", (req, res) => {
               userName,
               score: 0,
               ready: false,
-              choice: false,
+              choice: "none",
             },
             jugador2: {
               userName: "rival",
               score: 0,
               ready: false,
-              choice: false,
+              choice: "none",
             },
           })
           .then(() => {
@@ -74,7 +74,7 @@ app.post("/newroom", (req, res) => {
                 rtdbRoomId: roomLongId,
                 jugador1: userName,
                 j1score: 0,
-                jugador2: "rivalName",
+                jugador2: false,
                 j2score: 0,
               })
               .then(() => {
@@ -82,7 +82,7 @@ app.post("/newroom", (req, res) => {
                   rtdbRoomId: roomLongId,
                   roomId: roomId.toString(),
                   jugador: "jugador1",
-                  rivalName: "rivalName",
+                  rivalName: false,
                 });
               });
           });

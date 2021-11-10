@@ -13,8 +13,8 @@ const state = {
     jugador: "",
     score: "",
     rivalScore: "",
-    choice: "",
-    rivalChoice: "",
+    choice: "none",
+    rivalChoice: "none",
   },
 
   listeners: [],

@@ -2,8 +2,6 @@ import { Router } from "@vaadin/router";
 import { state } from "../../state";
 
 export class Play extends HTMLElement {
-  rivalChoice: string;
-  chocie: string;
   connectedCallback() {
     this.render();
   }
@@ -24,10 +22,18 @@ export class Play extends HTMLElement {
           `;
 
     function pushHistoryAndResults(playerPlay) {
-      state.setPlayerPlay(playerPlay);
+      state.setPlayerPlay(playerPlay || "none");
 
       setTimeout(() => {
-        Router.go("/result");
+        const currentState = state.getState();
+        if (
+          currentState.rivalChoice == "none" ||
+          currentState.choice == "none"
+        ) {
+          Router.go("/instruction");
+        } else {
+          Router.go("/result");
+        }
       }, 2000);
       state.setRivalPlay();
     }
@@ -83,9 +89,8 @@ export class Play extends HTMLElement {
       intervalCounter--;
 
       playerPlayEl = div.querySelector(".selected") || "none";
-      if (intervalCounter == 0 && playerPlayEl == "none") {
-        Router.go("./instruction");
-      } else if (intervalCounter == 0) {
+
+      if (intervalCounter == 0) {
         pushHistoryAndResults(playerPlayEl.material);
 
         window.clearInterval(countDownInterval);
