@@ -54,12 +54,14 @@ app.post("/newroom", (req, res) => {
               score: 0,
               ready: false,
               choice: "none",
+              online: false,
             },
             jugador2: {
               userName: "rival",
               score: 0,
               ready: false,
               choice: "none",
+              online: false,
             },
           })
           .then(() => {

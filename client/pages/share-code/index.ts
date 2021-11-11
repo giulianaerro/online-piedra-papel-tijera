@@ -3,15 +3,18 @@ import { state } from "../../state";
 
 class ShareCodePage extends HTMLElement {
   roomId: string;
+  rivalName: string;
   connectedCallback() {
     const currentState = state.getState();
     this.roomId = currentState.roomId;
+    state.listenOnline();
+
     this.render();
 
-    const form = document.querySelector(".button__code");
-    form.addEventListener("click", () => {
-      Router.go("/instruction");
-    });
+    // const form = document.querySelector(".button__code");
+    // form.addEventListener("click", () => {
+    //   Router.go("/instruction");
+    // });
   }
   render() {
     const style = document.createElement("style");

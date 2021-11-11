@@ -16,6 +16,7 @@ class InitiationName extends HTMLElement {
           state.getRealTimeDatabase(currentState.roomId).then(() => {
             state.connectToRoom(() => {
               Router.go("/instruction");
+              state.setOnlineTrue();
             });
           });
         });
@@ -23,6 +24,7 @@ class InitiationName extends HTMLElement {
         state.signUp(user).then(() => {
           state.newRoom(() => {
             Router.go("/sharecode");
+            state.setOnlineTrue();
           });
         });
       }

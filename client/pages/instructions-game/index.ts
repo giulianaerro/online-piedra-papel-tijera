@@ -4,6 +4,7 @@ import { state } from "../../state";
 class InstructionPage extends HTMLElement {
   connectedCallback() {
     state.setReadyFalse();
+    state.setOnlineFalse();
     state.getRivalInfo(() => {
       this.render();
       const button = document.querySelector(".button");

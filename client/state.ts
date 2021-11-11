@@ -130,6 +130,24 @@ const state = {
         callback();
       });
   },
+  setOnlineTrue() {
+    const currentState = this.getState();
+    const roomRef = realTimeDatabase.ref(
+      "/rooms/" + currentState.rtdbRoomId + "/" + currentState.jugador
+    );
+    roomRef.update({
+      online: true,
+    });
+  },
+  setOnlineFalse() {
+    const currentState = this.getState();
+    const roomRef = realTimeDatabase.ref(
+      "/rooms/" + currentState.rtdbRoomId + "/" + currentState.jugador
+    );
+    roomRef.update({
+      online: false,
+    });
+  },
   setReadyTrue() {
     const currentState = this.getState();
     const roomRef = realTimeDatabase.ref(
@@ -139,7 +157,18 @@ const state = {
       ready: true,
     });
   },
+  listenOnline() {
+    const currentState = this.getState();
+    const roomRef = realTimeDatabase.ref("/rooms/" + currentState.rtdbRoomId);
 
+    roomRef.on("value", (snap) => {
+      const j1OnlineTrue = snap.val().jugador1.online;
+      const j2OnlineTrue = snap.val().jugador2.online;
+      if (j1OnlineTrue == true && j2OnlineTrue == true) {
+        Router.go("/instruction");
+      }
+    });
+  },
   listenReady() {
     const currentState = this.getState();
     const roomRef = realTimeDatabase.ref("/rooms/" + currentState.rtdbRoomId);
