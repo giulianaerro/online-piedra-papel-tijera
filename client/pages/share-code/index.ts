@@ -10,11 +10,6 @@ class ShareCodePage extends HTMLElement {
     state.listenOnline();
 
     this.render();
-
-    // const form = document.querySelector(".button__code");
-    // form.addEventListener("click", () => {
-    //   Router.go("/instruction");
-    // });
   }
   render() {
     const style = document.createElement("style");

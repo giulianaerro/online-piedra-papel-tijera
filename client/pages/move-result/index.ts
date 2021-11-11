@@ -77,9 +77,7 @@ export class Result extends HTMLElement {
       }
 
 `;
-    // this.className = "result__container";
     const div = document.createElement("div");
-    // div.className = "rival-choice";
 
     if (this.rivalChoice == "papel") {
       div.innerHTML = `

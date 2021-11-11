@@ -42,7 +42,6 @@ export class Win extends HTMLElement {
       Router.go("/");
     });
     playAgainButton.addEventListener("click", () => {
-      // state.deleteChoices();
       Router.go("/instruction");
     });
     this.appendChild(div);
