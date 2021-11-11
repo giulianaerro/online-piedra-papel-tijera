@@ -9,6 +9,7 @@ router.setRoutes([
   { path: "/instruction", component: "instruction-page" },
   { path: "/waiting", component: "waiting-rival" },
   { path: "/play", component: "play-game" },
+  { path: "/errornoplay", component: "error-rivalnojuega" },
   { path: "/result", component: "result-page" },
   { path: "/result/win", component: "result-win" },
   { path: "/result/lose", component: "result-lose" },

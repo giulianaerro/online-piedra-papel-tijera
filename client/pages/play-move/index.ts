@@ -30,7 +30,7 @@ export class Play extends HTMLElement {
           currentState.rivalChoice == "none" ||
           currentState.choice == "none"
         ) {
-          Router.go("/instruction");
+          Router.go("/errornoplay");
         } else {
           Router.go("/result");
         }

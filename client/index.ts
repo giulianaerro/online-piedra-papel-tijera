@@ -12,6 +12,7 @@ import "./pages/play-move";
 import "./pages/share-code";
 import "./pages/instructions-game";
 import "./pages/waiting-rival-page";
+import "./pages/error-no-juega";
 import "./pages/move-result";
 import "./pages/result/equal";
 import "./pages/result/win";
