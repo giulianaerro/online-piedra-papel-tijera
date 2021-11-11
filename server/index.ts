@@ -19,22 +19,20 @@ app.post("/signup", (req, res) => {
   usersCollection
     .where("userName", "==", userName)
     .get()
-    .then((searchResponse) => {
-      if (searchResponse.empty) {
-        usersCollection
-          .add({
-            userName,
-          })
-          .then((newUserRef) => {
-            res.json({
-              userId: newUserRef.id,
-            });
+    .then(() => {
+      usersCollection
+        .add({
+          userName,
+        })
+        .then((newUserRef) => {
+          res.json({
+            userId: newUserRef.id,
           });
-      } else {
-        res.status(400).json({
-          message: "user already exist",
         });
-      }
+      // } else {
+      //   res.status(400).json({
+      //     message: "user already exist",
+      //   });
     });
 });
 
