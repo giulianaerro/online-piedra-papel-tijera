@@ -29,10 +29,6 @@ app.post("/signup", (req, res) => {
             userId: newUserRef.id,
           });
         });
-      // } else {
-      //   res.status(400).json({
-      //     message: "user already exist",
-      //   });
     });
 });
 
